@@ -1,0 +1,105 @@
+import streamlit as st
+
+
+def calculate_resources(input_type, total_input):
+    if input_type == "Total Users":
+        total_ticket = total_input * 1.2
+    else:
+        total_ticket = total_input
+
+    per_month_ticket = total_ticket / 12
+
+    # Calculation for 24x7 scenario
+    per_day_ticket_24x7 = per_month_ticket / 31
+    remote_tickets_24x7 = per_day_ticket_24x7 * 0.4
+    field_tickets_24x7 = per_day_ticket_24x7 * 0.6
+    remote_resources_24x7 = per_day_ticket_24x7 / 7
+    field_resources_24x7 = field_tickets_24x7 / 5
+
+    # Calculation for 8x5 scenario
+    per_day_ticket_8x5 = per_month_ticket / 22
+    remote_tickets_8x5 = per_day_ticket_8x5 * 0.4
+    field_tickets_8x5 = per_day_ticket_8x5 * 0.6
+    remote_resources_8x5 = remote_tickets_8x5 / 7
+    field_resources_8x5 = field_tickets_8x5 / 5
+
+    return (remote_tickets_24x7, field_tickets_24x7, remote_tickets_8x5, field_tickets_8x5,
+            remote_resources_24x7, field_resources_24x7, remote_resources_8x5, field_resources_8x5)
+
+
+st.title("Resource Calculation")
+
+input_type = st.radio("Select input type:", ("Total Users", "Total Tickets"))
+total_input = st.number_input("Enter total:", min_value=0)
+
+if st.button("Calculate"):
+    (remote_tickets_24x7, field_tickets_24x7, remote_tickets_8x5, field_tickets_8x5,
+     remote_resources_24x7, field_resources_24x7, remote_resources_8x5, field_resources_8x5) = calculate_resources(input_type, total_input)
+
+    st.write("### Results for 24x7 scenario")
+    st.write("Remote Tickets per Day:", remote_tickets_24x7)
+    st.write("Field Tickets per Day:", field_tickets_24x7)
+    st.write("Remote Resources per Day:", remote_resources_24x7)
+    st.write("Field Resources per Day:", field_resources_24x7)
+
+    st.write("### Results for 8x5 scenario")
+    st.write("Remote Tickets per Day:", remote_tickets_8x5)
+    st.write("Field Tickets per Day:", field_tickets_8x5)
+    st.write("Remote Resources per Day:", remote_resources_8x5)
+    st.write("Field Resources per Day:", field_resources_8x5)
+
+
+
+Version 1.0
+
+import streamlit as st
+import pandas as pd
+
+
+def calculate_resources(input_type, total_input):
+    if input_type == "Total Users":
+        total_ticket = total_input * 1.2
+    else:
+        total_ticket = total_input
+
+    per_month_ticket = total_ticket / 12
+
+    # Calculation for ticket distribution
+    remote_tickets_per_month = per_month_ticket * 0.4
+    field_tickets_per_month = per_month_ticket * 0.6
+
+    # Calculation for tickets per day
+    tickets_per_day_24x7 = total_ticket / 31
+    tickets_per_day_8x5 = total_ticket / 22
+
+    # Calculation for resources
+    remote_resources = total_ticket / 6
+    field_resources = total_ticket / 5
+
+    return remote_tickets_per_month, field_tickets_per_month, tickets_per_day_24x7, tickets_per_day_8x5, remote_resources, field_resources
+
+
+def main():
+    st.title("Resource Calculator")
+    st.sidebar.title("Calculate By:")
+    input_type = st.sidebar.radio("", ("Total Ticket", "Total Users"))
+    st.sidebar.info("this is where the assumptions will show")
+
+    if input_type == "Total Ticket":
+        total_input = st.number_input("Enter Total Ticket:", min_value=0)
+    else:
+        total_input = st.number_input("Enter Total Users:", min_value=0)
+
+    if st.button("Calculate"):
+        remote_tickets_per_month, field_tickets_per_month, tickets_per_day_24x7, tickets_per_day_8x5, remote_resources, field_resources = calculate_resources(
+            input_type, total_input)
+
+        df = pd.DataFrame({
+            "Metric": ["Remote Tickets per Month", "Field Tickets per Month", "Tickets per Day (24x7)", "Tickets per Day (8x5)", "Remote Resources", "Field Resources"],
+            "Value": [remote_tickets_per_month, field_tickets_per_month, tickets_per_day_24x7, tickets_per_day_8x5, remote_resources, field_resources]
+        })
+        st.table(df)
+
+
+if __name__ == "__main__":
+    main()
