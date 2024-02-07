@@ -12,7 +12,7 @@ def calculate_resources(input_type, total_input):
     else:
         total_ticket = total_input
 
-    remote_support_ticket = total_ticket * 0.4
+remote_support_ticket = total_ticket * 0.4
     remote_tickets_per_month = remote_support_ticket / 12
 
     field_support_ticket = total_ticket * 0.6
