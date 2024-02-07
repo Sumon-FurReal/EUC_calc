@@ -12,26 +12,26 @@ def calculate_resources(input_type, total_input):
     else:
         total_ticket = total_input
 
-    remote_support_ticket = total_ticket * 0.4
+remote_support_ticket = total_ticket * 0.4
     remote_tickets_per_month = remote_support_ticket / 12
 
     field_support_ticket = total_ticket * 0.6
     field_tickets_per_month = field_support_ticket / 12
 
     # For 24x7 Remote
-    remote_tickets_per_day_24x7 = remote_tickets_per_month / 31
+    remote_tickets_per_day_24x7 = remote_support_ticket / 31
     remote_support_FTE_24x7 = remote_tickets_per_day_24x7 / 6
 
     # For 24x7 Field
-    field_tickets_per_day_24x7 = field_tickets_per_month / 31
+    field_tickets_per_day_24x7 = field_support_ticket / 31
     field_support_FTE_24x7 = field_tickets_per_day_24x7 / 5
 
     # For 8x5 Remote
-    remote_tickets_per_day_8x5 = remote_tickets_per_month / 22
+    remote_tickets_per_day_8x5 = remote_support_ticket / 22
     remote_support_FTE_8x5 = remote_tickets_per_day_8x5 / 6
 
     # For 8x5 Field
-    field_tickets_per_day_8x5 = field_tickets_per_month / 22
+    field_tickets_per_day_8x5 = field_support_ticket / 22
     field_support_FTE_8x5 = field_tickets_per_day_8x5 / 5
 
     return remote_tickets_per_month, field_tickets_per_month, \
